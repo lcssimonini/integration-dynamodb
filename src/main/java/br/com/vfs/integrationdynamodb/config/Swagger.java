@@ -1,5 +1,8 @@
 package br.com.vfs.integrationdynamodb.config;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.service.ApiInfo;
@@ -14,7 +17,10 @@ import static springfox.documentation.builders.RequestHandlerSelectors.basePacka
 
 @Configuration
 @EnableSwagger2
+@RequiredArgsConstructor
 public class Swagger {
+
+    private final BuildProperties buildProperties;
 
     @Bean
     public Docket api() {
@@ -28,9 +34,9 @@ public class Swagger {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "Host API",
+                buildProperties.getName(),
                 "Hosts Test API",
-                "1.0.0",
+                buildProperties.getVersion(),
                 "Terms of service Url",
                 new Contact("VFS", "VFS", "VFS"),
                 "License",
