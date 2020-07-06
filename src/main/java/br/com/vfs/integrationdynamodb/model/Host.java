@@ -15,9 +15,9 @@ import java.io.Serializable;
 @EqualsAndHashCode(of = "name")
 @DynamoDBTable(tableName = "hosts")
 public class Host implements Serializable {
-    @DynamoDBHashKey
+    @DynamoDBHashKey(attributeName = "name")
     private String name;
-    @DynamoDBRangeKey
+    @DynamoDBRangeKey(attributeName = "ip")
     private String ip;
     @DynamoDBAttribute
     private int port;
