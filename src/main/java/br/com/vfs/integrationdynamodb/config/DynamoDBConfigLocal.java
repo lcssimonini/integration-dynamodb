@@ -1,21 +1,27 @@
 package br.com.vfs.integrationdynamodb.config;
 
 import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.StringUtils;
+import org.springframework.context.annotation.Profile;
 
+@Profile("local")
 @Configuration
 @EnableDynamoDBRepositories(basePackages = "br.com.vfs.integrationdynamodb.repository")
-public class DynamoDBConfig {
-
+public class DynamoDBConfigLocal {
     @Value("${amazon.dynamodb.endpoint}")
     private String amazonDynamoDBEndpoint;
+
+    @Value("${amazon.dynamodb.region}")
+    private String amazonDynamoDBRegion;
 
     @Value("${amazon.aws.accesskey}")
     private String amazonAWSAccessKey;
@@ -25,15 +31,24 @@ public class DynamoDBConfig {
 
     @Bean
     public AmazonDynamoDB amazonDynamoDB() {
-        AmazonDynamoDB amazonDynamoDB = new AmazonDynamoDBClient(amazonAWSCredentials());
-        if (!StringUtils.isEmpty(amazonDynamoDBEndpoint)) {
-            amazonDynamoDB.setEndpoint(amazonDynamoDBEndpoint);
-        }
-        return amazonDynamoDB;
+        return AmazonDynamoDBClientBuilder
+                .standard()
+                .withCredentials(amazonAWSCredentialsProvider())
+                .withEndpointConfiguration(amazonAwsClientBuilder())
+                .build();
     }
 
     @Bean
     public AWSCredentials amazonAWSCredentials() {
         return new BasicAWSCredentials(amazonAWSAccessKey, amazonAWSSecretKey);
+    }
+
+    private AwsClientBuilder.EndpointConfiguration amazonAwsClientBuilder() {
+        return new AwsClientBuilder
+                .EndpointConfiguration(amazonDynamoDBEndpoint, amazonDynamoDBRegion);
+    }
+
+    private AWSCredentialsProvider amazonAWSCredentialsProvider() {
+        return new AWSStaticCredentialsProvider(amazonAWSCredentials());
     }
 }
