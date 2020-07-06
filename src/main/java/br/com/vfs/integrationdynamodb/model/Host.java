@@ -2,6 +2,7 @@ package br.com.vfs.integrationdynamodb.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import lombok.*;
 
@@ -16,7 +17,7 @@ import java.io.Serializable;
 public class Host implements Serializable {
     @DynamoDBHashKey
     private String name;
-    @DynamoDBAttribute
+    @DynamoDBRangeKey
     private String ip;
     @DynamoDBAttribute
     private int port;
