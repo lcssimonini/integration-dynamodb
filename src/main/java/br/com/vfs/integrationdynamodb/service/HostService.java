@@ -55,6 +55,7 @@ public class HostService {
 
     public void update(final String name, final String ip, final Host host){
         final Host exist = find(name, ip);
+        mapper.delete(exist);
         exist.setName(host.getName());
         exist.setIp(host.getIp());
         exist.setPort(host.getPort());
