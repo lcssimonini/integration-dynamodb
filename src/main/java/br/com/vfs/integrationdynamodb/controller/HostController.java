@@ -21,10 +21,22 @@ public class HostController {
         return service.findAll();
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/name/{name}/ip/{ip}")
     @ResponseStatus(HttpStatus.OK)
-    public Host find(@PathVariable final String name){
-        return service.find(name);
+    public Host find(@PathVariable final String name, @PathVariable final String ip){
+        return service.find(name, ip);
+    }
+
+    @GetMapping("/name/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public Set<Host> findByName(@PathVariable final String name){
+        return service.findByName(name);
+    }
+
+    @GetMapping("/ip/{ip}")
+    @ResponseStatus(HttpStatus.OK)
+    public Set<Host> findByIp(@PathVariable final String ip){
+        return service.findByIp(ip);
     }
 
     @PostMapping
@@ -33,15 +45,15 @@ public class HostController {
         return service.insert(host);
     }
 
-    @PutMapping("/{name}")
+    @PutMapping("/name/{name}/ip/{ip}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable final String name, @RequestBody final Host host){
-        service.update(name, host);
+    public void update(@PathVariable final String name, @PathVariable final String ip, @RequestBody final Host host){
+        service.update(name, ip, host);
     }
 
-    @DeleteMapping("/{name}")
+    @DeleteMapping("/name/{name}/ip/{ip}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable final String name){
-        service.delete(name);
+    public void delete(@PathVariable final String name, @PathVariable final String ip){
+        service.delete(name, ip);
     }
 }

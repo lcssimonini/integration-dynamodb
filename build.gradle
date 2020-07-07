@@ -23,9 +23,9 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation platform('software.amazon.awssdk:bom:2.13.49')
+	implementation platform('software.amazon.awssdk:bom:2.13.50')
 	implementation 'software.amazon.awssdk:dynamodb'
-	implementation 'com.github.derjust:spring-data-dynamodb:5.1.0'
+	compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.816'
 	compile "io.springfox:springfox-swagger2:2.9.2"
 	compile "io.springfox:springfox-swagger-ui:2.9.2"
 	compileOnly 'org.projectlombok:lombok'
